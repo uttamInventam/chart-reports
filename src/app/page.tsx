@@ -1,24 +1,28 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { mockDevices } from "@/lib/data";
-import { Device } from "@/types/device";
+import { useState, useRef, useEffect } from "react";
+import { ipqcDevices } from "@/lib/ipqcDevices";
 import { generatePDF } from "@/lib/pdf-export";
 import ReportContainer from "@/components/ReportContainer";
 import dynamic from "next/dynamic";
-import { FileDown, Server, Activity } from "lucide-react";
+import { FileDown, Server, Activity, BarChart2 } from "lucide-react";
 
-const Chart = dynamic(() => import("@/components/Chart"), { ssr: false });
+const DynamicChart = dynamic(() => import("@/components/DynamicChart"), { ssr: false });
 
 export default function Home() {
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string>(
-    mockDevices[0].id
-  );
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string>(ipqcDevices[0].id);
+  const [activeTab, setActiveTab] = useState<string>(ipqcDevices[0].availableCharts[0]);
   const [isGenerating, setIsGenerating] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
 
-  const selectedDevice =
-    mockDevices.find((d) => d.id === selectedDeviceId) || mockDevices[0];
+  const selectedDevice = ipqcDevices.find((d) => d.id === selectedDeviceId) || ipqcDevices[0];
+
+  // Update active tab when the device changes
+  useEffect(() => {
+    if (!selectedDevice.availableCharts.includes(activeTab)) {
+      setActiveTab(selectedDevice.availableCharts[0]);
+    }
+  }, [selectedDevice, activeTab]);
 
   const handleGeneratePDF = async () => {
     setIsGenerating(true);
@@ -34,7 +38,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-12 font-sans text-gray-900">
-      <div className="max-w-5xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Header and Controls */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -43,13 +47,13 @@ export default function Home() {
               <Activity size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Device Reporting</h1>
-              <p className="text-sm text-gray-500">Monitor and export device metrics</p>
+              <h1 className="text-2xl font-bold tracking-tight">IPQC Device Reporting</h1>
+              <p className="text-sm text-gray-500">Monitor and export in-process quality control metrics</p>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-            <div className="w-full sm:w-64">
+            <div className="w-full sm:w-80">
               <label htmlFor="device-select" className="sr-only">Select Device</label>
               <select
                 id="device-select"
@@ -57,7 +61,7 @@ export default function Home() {
                 onChange={(e) => setSelectedDeviceId(e.target.value)}
                 className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
               >
-                {mockDevices.map((device) => (
+                {ipqcDevices.map((device) => (
                   <option key={device.id} value={device.id}>
                     {device.name}
                   </option>
@@ -77,7 +81,7 @@ export default function Home() {
               ) : (
                 <>
                   <FileDown size={18} />
-                  Generate PDF Report
+                  Export PDF
                 </>
               )}
             </button>
@@ -113,16 +117,37 @@ export default function Home() {
           </div>
 
           <div className="p-6">
-            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">Performance Metrics (6 Months)</h3>
+            <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2 border-b border-gray-100">
+              <BarChart2 size={18} className="text-gray-400" />
+              {selectedDevice.availableCharts.map((chartType) => (
+                <button
+                  key={chartType}
+                  onClick={() => setActiveTab(chartType)}
+                  className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors whitespace-nowrap ${
+                    activeTab === chartType
+                      ? 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {chartType}
+                </button>
+              ))}
+            </div>
+
             <div className="w-full flex justify-center">
-              <Chart data={selectedDevice.metrics} />
+              <DynamicChart 
+                data={selectedDevice.metrics} 
+                specs={selectedDevice.specs} 
+                chartType={activeTab} 
+                unit={selectedDevice.unit} 
+              />
             </div>
           </div>
         </div>
       </div>
 
       {/* Hidden Report Container for PDF Generation */}
-      <ReportContainer ref={reportRef} device={selectedDevice} />
+      <ReportContainer ref={reportRef} device={selectedDevice} activeChartType={activeTab} />
     </div>
   );
 }
