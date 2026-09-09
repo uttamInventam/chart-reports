@@ -3,9 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import { ipqcDevices } from "@/lib/ipqcDevices";
 import { generatePDF } from "@/lib/pdf-export";
-import ReportContainer from "@/components/ReportContainer";
 import dynamic from "next/dynamic";
 import { FileDown, Server, Activity, BarChart2 } from "lucide-react";
+import { toPng } from 'html-to-image';
 
 const DynamicChart = dynamic(() => import("@/components/DynamicChart"), { ssr: false });
 
@@ -13,11 +13,10 @@ export default function Home() {
   const [selectedDeviceId, setSelectedDeviceId] = useState<string>(ipqcDevices[0].id);
   const [activeTab, setActiveTab] = useState<string>(ipqcDevices[0].availableCharts[0]);
   const [isGenerating, setIsGenerating] = useState(false);
-  const reportRef = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<HTMLDivElement>(null);
 
   const selectedDevice = ipqcDevices.find((d) => d.id === selectedDeviceId) || ipqcDevices[0];
 
-  // Update active tab when the device changes
   useEffect(() => {
     if (!selectedDevice.availableCharts.includes(activeTab)) {
       setActiveTab(selectedDevice.availableCharts[0]);
@@ -27,7 +26,9 @@ export default function Home() {
   const handleGeneratePDF = async () => {
     setIsGenerating(true);
     try {
-      await generatePDF(selectedDevice, reportRef);
+      if (!chartRef.current) return;
+      const chartBase64 = await toPng(chartRef.current, { cacheBust: true, backgroundColor: '#ffffff' });
+      await generatePDF(selectedDevice, activeTab, chartBase64);
     } catch (error) {
       console.error("Failed to generate PDF", error);
       alert("Failed to generate PDF");
@@ -134,7 +135,7 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center" ref={chartRef}>
               <DynamicChart 
                 data={selectedDevice.metrics} 
                 specs={selectedDevice.specs} 
@@ -145,9 +146,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* Hidden Report Container for PDF Generation */}
-      <ReportContainer ref={reportRef} device={selectedDevice} activeChartType={activeTab} />
     </div>
   );
 }

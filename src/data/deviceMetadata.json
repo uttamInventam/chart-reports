@@ -1,0 +1,210 @@
+{
+  "devices": [
+    {
+      "deviceId": "tablet_hardness",
+      "deviceName": "Tablet Hardness Tester",
+      "product": "Paracetamol 500mg Tablets",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T10:30:00Z",
+      "unit": "kg/cm2",
+      "specLimits": { "lsl": 4.0, "usl": 8.0 },
+      "readings": [5.2, 5.8, 6.1, 4.9, 6.5, 5.5, 7.0, 6.3, 5.9, 6.0],
+      "stats": { "mean": 5.92, "sd": 0.62, "rsd": 10.5, "min": 4.9, "max": 7.0 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "friability",
+      "deviceName": "Friability Tester",
+      "product": "Paracetamol 500mg Tablets",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T10:45:00Z",
+      "unit": "%",
+      "specLimits": { "lsl": 0, "usl": 1.0 },
+      "initialWeight": 6.502,
+      "finalWeight": 6.474,
+      "weightLossPercent": 0.43,
+      "result": "PASS"
+    },
+    {
+      "deviceId": "disintegration",
+      "deviceName": "Disintegration Test Apparatus",
+      "product": "Paracetamol 500mg Tablets",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T11:00:00Z",
+      "unit": "seconds",
+      "specLimits": { "lsl": 0, "usl": 900 },
+      "medium": "Water at 37C",
+      "readings": [320, 410, 385, 450, 300, 360],
+      "stats": { "mean": 371, "min": 300, "max": 450 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "dissolution",
+      "deviceName": "Dissolution Test Apparatus",
+      "product": "Paracetamol 500mg Tablets",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T11:30:00Z",
+      "unit": "% drug released",
+      "apparatus": "USP Type II (Paddle), 50 RPM",
+      "medium": "Phosphate buffer pH 6.8",
+      "specLimits": { "lsl": 80, "usl": 100, "timePoint": "30 min" },
+      "vessels": [
+        { "vessel": 1, "timePoints": [{ "time": 5, "value": 20 }, { "time": 10, "value": 42 }, { "time": 15, "value": 65 }, { "time": 30, "value": 88 }, { "time": 45, "value": 95 }, { "time": 60, "value": 98 }] },
+        { "vessel": 2, "timePoints": [{ "time": 5, "value": 18 }, { "time": 10, "value": 39 }, { "time": 15, "value": 60 }, { "time": 30, "value": 85 }, { "time": 45, "value": 93 }, { "time": 60, "value": 97 }] }
+      ],
+      "result": "PASS"
+    },
+    {
+      "deviceId": "weight_variation",
+      "deviceName": "Weight Variation Tester",
+      "product": "Paracetamol 500mg Tablets",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T09:50:00Z",
+      "unit": "mg",
+      "specLimits": { "lsl": 190, "usl": 210, "target": 200 },
+      "readings": [198, 202, 205, 197, 201, 199, 206, 195, 200, 203],
+      "stats": { "mean": 200.6, "sd": 3.35, "min": 195, "max": 206 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "thickness_diameter",
+      "deviceName": "Thickness/Diameter Tester",
+      "product": "Paracetamol 500mg Tablets",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T10:00:00Z",
+      "unit": "mm",
+      "specLimits": { "lsl": 4.5, "usl": 5.5, "target": 5.0 },
+      "readings": [4.9, 5.1, 5.0, 4.8, 5.2, 5.0],
+      "stats": { "mean": 5.0, "sd": 0.14, "min": 4.8, "max": 5.2 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "leak_test",
+      "deviceName": "Leak Test Apparatus (Blister/Strip)",
+      "product": "Paracetamol 500mg Tablets - Blister Pack",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T12:00:00Z",
+      "sampleSize": 100,
+      "passCount": 96,
+      "failCount": 4,
+      "method": "Vacuum immersion (dye bath)",
+      "result": "PASS"
+    },
+    {
+      "deviceId": "ph_meter",
+      "deviceName": "pH Meter",
+      "product": "Cough Syrup Batch",
+      "batchNo": "B-2026-0913",
+      "testDate": "2026-09-09T08:30:00Z",
+      "unit": "pH",
+      "specLimits": { "lsl": 6.5, "usl": 7.5 },
+      "temperature": "25C",
+      "readings": [6.9, 7.1, 7.0, 6.8, 7.2],
+      "stats": { "mean": 7.0, "min": 6.8, "max": 7.2 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "viscosity",
+      "deviceName": "Viscosity Tester",
+      "product": "Cough Syrup Batch",
+      "batchNo": "B-2026-0913",
+      "testDate": "2026-09-09T08:45:00Z",
+      "unit": "cP",
+      "specLimits": { "lsl": 100, "usl": 200 },
+      "spindle": "Spindle #2, 60 RPM",
+      "readings": [145, 160, 138, 172, 155],
+      "stats": { "mean": 154, "min": 138, "max": 172 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "moisture_analyzer",
+      "deviceName": "Moisture Analyzer (LOD)",
+      "product": "Granules - Pre-compression",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T07:30:00Z",
+      "unit": "%",
+      "specLimits": { "lsl": 0, "usl": 5.0 },
+      "sampleWeight": "5g",
+      "temperature": "105C",
+      "readings": [2.1, 2.8, 3.2, 2.5, 3.0],
+      "stats": { "mean": 2.72, "min": 2.1, "max": 3.2 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "bulk_tapped_density",
+      "deviceName": "Bulk & Tapped Density Tester",
+      "product": "Granules - Pre-compression",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T07:45:00Z",
+      "unit": "g/mL",
+      "bulkDensity": 0.42,
+      "tappedDensity": 0.55,
+      "carrsIndex": 23.6,
+      "hausnerRatio": 1.31,
+      "flowCharacter": "Passable",
+      "result": "PASS"
+    },
+    {
+      "deviceId": "assay_content_uniformity",
+      "deviceName": "Assay / Content Uniformity (HPLC)",
+      "product": "Paracetamol 500mg Tablets",
+      "batchNo": "B-2026-0912",
+      "testDate": "2026-09-09T13:00:00Z",
+      "unit": "% assay",
+      "specLimits": { "lsl": 90, "usl": 110, "target": 100 },
+      "readings": [98.5, 101.2, 99.8, 102.5, 97.9, 100.6, 99.1, 103.0, 98.0, 101.0],
+      "stats": { "mean": 100.16, "sd": 1.73, "acceptanceValue": 3.9 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "particle_size",
+      "deviceName": "Particle Size Analyzer / Sieve Analysis",
+      "product": "API Powder - Incoming",
+      "batchNo": "RM-2026-0455",
+      "testDate": "2026-09-09T06:30:00Z",
+      "unit": "microns",
+      "distribution": [
+        { "sizeRange": "0-50", "count": 12 },
+        { "sizeRange": "50-100", "count": 28 },
+        { "sizeRange": "100-150", "count": 45 },
+        { "sizeRange": "150-200", "count": 30 },
+        { "sizeRange": "200-250", "count": 15 },
+        { "sizeRange": "250-300", "count": 5 }
+      ],
+      "stats": { "d10": 62, "d50": 138, "d90": 245 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "torque_tester",
+      "deviceName": "Torque Tester (Cap/Closure)",
+      "product": "Cough Syrup - Bottle Cap",
+      "batchNo": "B-2026-0913",
+      "testDate": "2026-09-09T14:00:00Z",
+      "unit": "N.cm",
+      "specLimits": { "lsl": 8, "usl": 15, "target": 11.5 },
+      "readings": [10.5, 12.1, 11.0, 13.2, 9.8, 11.5],
+      "stats": { "mean": 11.35, "min": 9.8, "max": 13.2 },
+      "result": "PASS"
+    },
+    {
+      "deviceId": "vacuum_leak_test",
+      "deviceName": "Vacuum Leak Test",
+      "product": "Cough Syrup Batch - Bottle Seal",
+      "batchNo": "B-2026-0913",
+      "testDate": "2026-09-09T14:15:00Z",
+      "unit": "mbar",
+      "specLimits": { "lsl": 0, "usl": 50 },
+      "testDurationSeconds": 50,
+      "readings": [
+        { "time": 0, "value": 5 },
+        { "time": 10, "value": 15 },
+        { "time": 20, "value": 22 },
+        { "time": 30, "value": 28 },
+        { "time": 40, "value": 33 },
+        { "time": 50, "value": 35 }
+      ],
+      "finalPressureDrop": 35,
+      "result": "PASS"
+    }
+  ]
+}
