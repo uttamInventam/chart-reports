@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { ipqcDevices } from "@/lib/ipqcDevices";
 import { generatePDF } from "@/lib/pdf-export";
 import dynamic from "next/dynamic";
@@ -17,12 +17,6 @@ export default function Home() {
 
   const selectedDevice = ipqcDevices.find((d) => d.id === selectedDeviceId) || ipqcDevices[0];
 
-  useEffect(() => {
-    if (!selectedDevice.availableCharts.includes(activeTab)) {
-      setActiveTab(selectedDevice.availableCharts[0]);
-    }
-  }, [selectedDevice, activeTab]);
-
   const handleGeneratePDF = async () => {
     setIsGenerating(true);
     try {
@@ -37,10 +31,19 @@ export default function Home() {
     }
   };
 
+
+  const handleDeviceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newDeviceId = e.target.value;
+    setSelectedDeviceId(newDeviceId);
+    const newDevice =
+      ipqcDevices.find((d) => d.id === newDeviceId) || ipqcDevices[0];
+    if (!newDevice.availableCharts.includes(activeTab)) {
+      setActiveTab(newDevice.availableCharts[0]);
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-12 font-sans text-gray-900">
       <div className="max-w-6xl mx-auto space-y-8">
-        
         {/* Header and Controls */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -48,18 +51,24 @@ export default function Home() {
               <Activity size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">IPQC Device Reporting</h1>
-              <p className="text-sm text-gray-500">Monitor and export in-process quality control metrics</p>
+              <h1 className="text-2xl font-bold tracking-tight">
+                IPQC Device Reporting
+              </h1>
+              <p className="text-sm text-gray-500">
+                Monitor and export in-process quality control metrics
+              </p>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
             <div className="w-full sm:w-80">
-              <label htmlFor="device-select" className="sr-only">Select Device</label>
+              <label htmlFor="device-select" className="sr-only">
+                Select Device
+              </label>
               <select
                 id="device-select"
                 value={selectedDeviceId}
-                onChange={(e) => setSelectedDeviceId(e.target.value)}
+                onChange={(e) => handleDeviceChange(e)}
                 className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
               >
                 {ipqcDevices.map((device) => (
@@ -102,18 +111,27 @@ export default function Home() {
                   <span>ID: {selectedDevice.id}</span>
                   <span>&bull;</span>
                   <span className="flex items-center gap-1">
-                    <span className={`w-2 h-2 rounded-full ${
-                      selectedDevice.status === 'Online' ? 'bg-green-500' :
-                      selectedDevice.status === 'Offline' ? 'bg-red-500' : 'bg-yellow-500'
-                    }`}></span>
+                    <span
+                      className={`w-2 h-2 rounded-full ${
+                        selectedDevice.status === "Online"
+                          ? "bg-green-500"
+                          : selectedDevice.status === "Offline"
+                            ? "bg-red-500"
+                            : "bg-yellow-500"
+                      }`}
+                    ></span>
                     {selectedDevice.status}
                   </span>
                 </div>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">{selectedDevice.location}</p>
-              <p className="text-xs text-gray-500" suppressHydrationWarning>Updated: {new Date(selectedDevice.lastUpdated).toLocaleString()}</p>
+              <p className="text-sm font-medium text-gray-900">
+                {selectedDevice.location}
+              </p>
+              <p className="text-xs text-gray-500" suppressHydrationWarning>
+                Updated: {new Date(selectedDevice.lastUpdated).toLocaleString()}
+              </p>
             </div>
           </div>
 
@@ -126,8 +144,8 @@ export default function Home() {
                   onClick={() => setActiveTab(chartType)}
                   className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors whitespace-nowrap ${
                     activeTab === chartType
-                      ? 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                      ? "text-blue-600 bg-blue-50 border-b-2 border-blue-600"
+                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
                   }`}
                 >
                   {chartType}
@@ -136,11 +154,11 @@ export default function Home() {
             </div>
 
             <div className="w-full flex justify-center" ref={chartRef}>
-              <DynamicChart 
-                data={selectedDevice.metrics} 
-                specs={selectedDevice.specs} 
-                chartType={activeTab} 
-                unit={selectedDevice.unit} 
+              <DynamicChart
+                data={selectedDevice.metrics}
+                specs={selectedDevice.specs}
+                chartType={activeTab}
+                unit={selectedDevice.unit}
               />
             </div>
           </div>
