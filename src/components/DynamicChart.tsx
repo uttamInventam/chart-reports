@@ -10,7 +10,6 @@ import {
   Scatter,
   PieChart,
   Pie,
-  Cell,
   AreaChart,
   Area,
   RadarChart,
@@ -438,11 +437,15 @@ export default function DynamicChart({
         </ScatterChart>,
       );
 
-    case "Pie":
+    case "Pie": {
+      const pieData = data.map((entry, index) => ({
+        ...entry,
+        fill: COLORS[index % COLORS.length],
+      }));
       return wrapChart(
         <PieChart>
           <Pie
-            data={data}
+            data={pieData}
             dataKey={primaryYKey}
             nameKey={xKey}
             cx="50%"
@@ -451,24 +454,22 @@ export default function DynamicChart({
             outerRadius={100}
             fill="#82ca9d"
             label
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
+          />
           <Tooltip />
           <Legend />
         </PieChart>,
       );
+    }
 
-    case "Donut":
+    case "Donut": {
+      const donutData = data.map((entry, index) => ({
+        ...entry,
+        fill: COLORS[index % COLORS.length],
+      }));
       return wrapChart(
         <PieChart>
           <Pie
-            data={data}
+            data={donutData}
             dataKey={primaryYKey}
             nameKey={xKey}
             cx="50%"
@@ -477,35 +478,32 @@ export default function DynamicChart({
             outerRadius={100}
             fill="#82ca9d"
             label
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
+          />
           <Tooltip />
           <Legend />
         </PieChart>,
       );
+    }
 
-    case "Gauge": // Half pie chart
+    case "Gauge": { // Half pie chart
+      const gaugeData = [
+        {
+          name: "Value",
+          value: (data[data.length - 1]?.[primaryYKey] as number) || 0,
+          fill: "#3b82f6",
+        },
+        {
+          name: "Empty",
+          value:
+            (specs?.usl || 100) -
+            ((data[data.length - 1]?.[primaryYKey] as number) || 0),
+          fill: "#e5e7eb",
+        },
+      ];
       return wrapChart(
         <PieChart>
           <Pie
-            data={[
-              {
-                name: "Value",
-                value: (data[data.length - 1]?.[primaryYKey] as number) || 0,
-              },
-              {
-                name: "Empty",
-                value:
-                  (specs?.usl || 100) -
-                  ((data[data.length - 1]?.[primaryYKey] as number) || 0),
-              },
-            ]}
+            data={gaugeData}
             dataKey="value"
             cx="50%"
             cy="70%"
@@ -515,13 +513,11 @@ export default function DynamicChart({
             outerRadius={100}
             fill="#8884d8"
             paddingAngle={0}
-          >
-            <Cell fill="#3b82f6" />
-            <Cell fill="#e5e7eb" />
-          </Pie>
+          />
           <Tooltip />
         </PieChart>,
       );
+    }
 
     case "Radar":
       return wrapChart(
